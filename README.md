@@ -3,7 +3,7 @@
 
 <h2>Description:</h2> 
 
-<p>A Laravel backend application for implementing Social Media APIs.</p>
+<p>A Laravel backend application for Social Media APIs. Users can view news feed, post, create personal page, follow other people and pages. Authentication is implemented using JWT.</p>
 
 
 <h2>Versions used:</h2>
@@ -34,7 +34,7 @@ php artisan db:seed
 ```
 
 You can also import this SQL Dump:
-<a href=""></a>
+<a href="https://github.com/sarwat-osman/social-media/blob/main/social_media.sql"></a>
 
 
 <h2>API Documentation:</h2>
