@@ -208,7 +208,7 @@ RESPONSE:
 
 
 <h3>News Feed:</h3> 
-<p>Logged in User can view posts from people and pages he/she followed. Supports pagination by taking page number and page size as params.</p>
+<p>Logged in User can view posts from people and pages he/she followed with the latest ones displayed first. Supports pagination by taking page number and page size as params.</p>
 
 <b>http://127.0.0.1:8000/api/view-newsfeed?page=1&page_size=10<br>
 GET</b>
