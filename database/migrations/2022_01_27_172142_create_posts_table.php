@@ -16,8 +16,8 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('post_content');             
-            $table->bigInteger('page_id');            
-            $table->bigInteger('owner_id');            
+            $table->bigInteger('page_id')->nullable();            
+            $table->bigInteger('owner_id')->nullable();            
             $table->dateTime('created_at');
             $table->dateTime('updated_at');
         });

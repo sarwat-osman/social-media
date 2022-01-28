@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use JWTAuth;
 use App\User;
 use Validator;
 use Exception;
@@ -11,43 +13,13 @@ use Exception;
 class AuthController extends Controller
 {
     /**
-     * Create a new AuthController instance.
-     *
-     * @return void
-     */
-    public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
-
-    /**
-     * Get a JWT via given credentials.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function login(Request $request){
-    	$validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        if (! $token = auth()->attempt($validator->validated())) {
-            return response()->json(['error' => 'Unauthorized!'], 401);
-        }
-
-        return $this->createNewToken($token);
-    }
-
-    /**
      * Register a User.
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(Request $request) {
     	try {
+
     		$validator = Validator::make($request->all(), [
 	            'first_name' => 'required|string|between:1,100',
 	            'last_name' => 'required|string|between:1,100',
@@ -56,7 +28,7 @@ class AuthController extends Controller
 	        ]);
 
 	        if($validator->fails()){
-	            return response()->json($validator->errors(), 400);
+	            return response()->json(['error' => $validator->errors()->first()], 400);
 	        }
 
 	        $userInfo['first_name'] = $request->first_name;
@@ -69,15 +41,40 @@ class AuthController extends Controller
 	            throw new Exception('Registration failed!');
 	        }
 
-	        return response()->json([
-	            'user' => $user
-	        ], 201);
+	        return response()->json(['user' => $user], 201);
 
     	} catch(Exception $e) {
-            return $e->getMessage();
+            return response()->json(['error' => $e->getMessage()], 500);
         }        
     }
 
+    /**
+     * Get a JWT via given credentials.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(Request $request) {
+    	try {
+
+    		$validator = Validator::make($request->all(), [
+	            'email' => 'required|email',
+	            'password' => 'required|string',
+	        ]);
+
+	        if ($validator->fails()) {
+	            return response()->json(['error' => $validator->errors()->first()], 422);
+	        }
+
+	        if (! $token = auth()->attempt($validator->validated())) {
+	            return response()->json(['error' => 'Unauthorized!'], 401);
+	        }
+
+	        return $this->createNewToken($token);
+    	
+    	}  catch(Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }    	
+    }
 
     /**
      * Log the user out (Invalidate the token).
