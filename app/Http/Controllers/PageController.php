@@ -82,7 +82,7 @@ class PageController extends Controller
                 return response()->json(['error' => $validator->errors()->first()], 400);
             }
 
-            $existPage = Page::where('id', $request->id)->first();
+            $existPage = Page::where('id', $request->page_id)->first();
             if(!$existPage) {
                 return response()->json(['error' => "Page not found!"], 400);
             }
