@@ -34,7 +34,7 @@ php artisan db:seed
 ```
 
 You can also import this SQL Dump:
-<a href="https://github.com/sarwat-osman/social-media/blob/main/social_media.sql"></a>
+<a href="https://github.com/sarwat-osman/social-media/blob/main/social_media.sql">social_media.sql</a>
 
 
 <h2>API Documentation:</h2>
