@@ -53,6 +53,10 @@ class PageController extends Controller
                 return response()->json(['error' => "Page not found!"], 400);
             }
 
+            if($existPage->owner_id == auth()->user()->id) {
+                return response()->json(['error' => "Bad request! Cannot follow own page."], 400);
+            }            
+
     		$followPageInfo['id'] = $request->id;
     		$followPageInfo['follower_id'] = auth()->user()->id;    		           
             $followPageInfo['created_at'] = date('Y-m-d H:i:s');
@@ -92,7 +96,7 @@ class PageController extends Controller
     		
     		$publishPost = Post::create($postInfo);
     		if(!$publishPost) {
-    			throw new Exception("Failed to publish post! Please try again.");    			
+    			throw new Exception("Failed to publish post! Please try again.");  			
     		}
     		
     		return response()->json(['message' => "Posted successfully!"], 201);
